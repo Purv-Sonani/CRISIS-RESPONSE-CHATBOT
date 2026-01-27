@@ -1,0 +1,69 @@
+############################
+# OS / Editor junk
+############################
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.log
+
+############################
+# Environment / secrets
+############################
+.env
+.env.*
+*.pem
+*.key
+
+############################
+# Python (Backend - Rasa)
+############################
+backend/venv/
+backend/.venv/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+
+############################
+# Rasa specific
+############################
+backend/models/
+backend/.rasa/
+backend/results/
+backend/.cache/
+backend/.pytest_cache/
+backend/logs/
+
+############################
+# Node / React (Frontend)
+############################
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.vite/
+
+############################
+# Docker
+############################
+*.tar
+docker-data/
+docker-volumes/
+docker-desktop-data/
+
+############################
+# Testing / coverage
+############################
+coverage/
+*.lcov
+.nyc_output/
+
+############################
+# Temporary / runtime files
+############################
+tmp/
+temp/
+*.tmp
