@@ -1,0 +1,34 @@
+services:
+  rasa:
+    build:
+      context: ./backend
+    container_name: rasa_server
+    ports:
+      - "5005:5005"
+    volumes:
+      - ./backend:/app
+    command: >
+      rasa run
+      --enable-api
+      --cors "*"
+      --model models
+      --port 5005
+    depends_on:
+      - action_server
+
+  action_server:
+    build:
+      context: ./backend
+    container_name: rasa_actions
+    ports:
+      - "5055:5055"
+    volumes:
+      - ./backend:/app
+    command: rasa run actions --port 5055
+
+  # frontend:
+  #   build: frontend
+  #   ports:
+  #     - "5173:5173"
+  #   depends_on:
+  #     - rasa

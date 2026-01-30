@@ -1,0 +1,107 @@
+version: "3.1"
+
+rules:
+  - rule: Greet user
+    steps:
+      - intent: greet
+      - action: utter_greet
+
+  - rule: Start emergency
+    steps:
+      - intent: start_emergency
+      - action: utter_entry_disclaimer
+      - action: utter_ask_emergency
+
+  - rule: Confirm emergency route
+    steps:
+      - intent: confirm_emergency
+      - action: utter_ask_disaster_type
+
+  - rule: After disaster selection ask location
+    steps:
+      - intent: select_disaster
+      - action: utter_ask_location
+
+  - rule: Process location when user provides it
+    steps:
+      - intent: provide_location
+      - action: action_process_location
+
+  - rule: Route after location confirmation
+    steps:
+      - intent: confirm_location
+      - action: action_route_after_location
+
+  - rule: User denies emergency
+    steps:
+      - intent: deny_emergency
+      - action: utter_goodbye
+
+  - rule: Handle fallback
+    steps:
+      - intent: fallback
+      - action: utter_fallback
+
+  - rule: Escalate when risk is high
+    condition:
+      - slot_was_set:
+          - escalation_required: true
+    steps:
+      - action: utter_escalation_notice
+      - action: action_escalate_to_human
+
+  - rule: Activate shelter search
+    steps:
+      - intent: find_shelter
+      - action: action_provide_shelters
+
+  - rule: User requests human
+    steps:
+      - intent: request_operator
+      - action: utter_escalation_notice
+      - action: action_escalate_to_human
+
+  - rule: After injury report
+    steps:
+      - intent: report_injury
+      - action: action_calculate_risk
+
+  - rule: After fire severity report
+    steps:
+      - intent: report_fire_severity
+      - action: action_calculate_risk
+
+  - rule: After fire control report
+    steps:
+      - intent: report_fire_control
+      - action: action_calculate_risk
+
+  - rule: After flood water level report
+    steps:
+      - intent: report_water_level
+      - action: action_calculate_risk
+
+  - rule: After flood evacuation report
+    steps:
+      - intent: report_evacuation_ability
+      - action: action_calculate_risk
+
+  - rule: After flood zone report
+    steps:
+      - intent: report_flood_zone
+      - action: action_calculate_risk
+
+  - rule: After location context report
+    steps:
+      - intent: report_location_context
+      - action: action_calculate_risk
+
+  - rule: After damage report
+    steps:
+      - intent: report_damage_status
+      - action: action_calculate_risk
+
+  - rule: After gas report
+    steps:
+      - intent: report_gas_status
+      - action: action_calculate_risk

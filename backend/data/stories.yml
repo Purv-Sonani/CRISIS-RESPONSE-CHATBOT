@@ -1,0 +1,57 @@
+version: "3.1"
+
+stories:
+  - story: Fire flow - small fire controlled
+    steps:
+      - intent: start_emergency
+      - action: utter_entry_disclaimer
+      - action: utter_ask_emergency
+      - intent: confirm_emergency
+      - action: utter_ask_disaster_type
+      - intent: select_disaster
+        entities:
+          - disaster_type: fire
+      - action: utter_ask_location
+      - intent: provide_location
+      - action: action_process_location
+      - intent: confirm_location
+      - action: action_route_after_location
+      - intent: report_fire_severity
+        entities:
+          - fire_severity: small
+      - action: action_calculate_risk
+      - intent: report_fire_control
+        entities:
+          - fire_under_control: true
+      - action: action_calculate_risk
+
+  - story: Fire flow - small fire uncontrolled
+    steps:
+      - intent: report_fire_severity
+        entities:
+          - fire_severity: small
+      - action: action_calculate_risk
+      - intent: report_fire_control
+        entities:
+          - fire_under_control: false
+      - action: action_calculate_risk
+      - intent: report_injury
+      - action: action_calculate_risk
+
+  - story: Flood flow - inside home
+    steps:
+      - intent: report_water_level
+        entities:
+          - water_level: inside_home
+      - action: action_calculate_risk
+      - intent: report_evacuation_ability
+      - action: action_calculate_risk
+
+  - story: Flood flow - outside home
+    steps:
+      - intent: report_water_level
+        entities:
+          - water_level: outside
+      - action: action_calculate_risk
+      - intent: report_flood_zone
+      - action: action_calculate_risk

@@ -1,0 +1,25 @@
+:root {
+    /* Brand */
+    --primary-blue: #0B5ED7;
+    --background: #F8F9FA;
+    --text-dark: #212529;
+
+    /* Alerts */
+    --danger-red: #DC3545;
+    --warning-orange: #FD7E14;
+    --safe-grey: #CED4DA;
+    --success-green: #198754;
+
+    /* Chat bubbles */
+    --bot-bg: #E9F2FF;
+    --user-bg: #0B5ED7;
+    --user-text: #FFFFFF;
+
+    /* Buttons */
+    --btn-danger: #DC3545;
+    --btn-primary: #0B5ED7;
+    --btn-secondary: #ADB5BD;
+
+    /* Layout */
+    --radius: 12px;
+}

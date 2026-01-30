@@ -1,0 +1,47 @@
+stories:
+  - story: Happy Path (Fire Flow)
+    steps:
+      - user: |
+          fire
+        intent: select_disaster
+      - action: utter_ask_location
+      - user: |
+          Berlin
+        intent: provide_location
+      - action: action_process_location
+      - action: utter_confirm_location
+      - user: |
+          yes
+        intent: confirm_location
+      - action: action_route_after_location
+      - action: utter_ask_fire_severity
+      - user: |
+          large
+        intent: report_fire_severity
+      - action: action_calculate_risk
+      - action: utter_fire_large
+      - action: utter_ask_injury
+
+  - story: Edge Case (Changing mind)
+    steps:
+      - user: |
+          emergency
+        intent: start_emergency
+      - action: utter_entry_disclaimer
+      - action: utter_ask_emergency
+      - user: |
+          No
+        intent: deny_emergency
+      - action: utter_goodbye
+      - user: |
+          actually help me
+        intent: start_emergency
+      - action: utter_entry_disclaimer
+      - action: utter_ask_emergency
+
+  - story: Fallback Test
+    steps:
+      - user: |
+          sdfsdfsdf
+        intent: nlu_fallback
+      - action: action_default_fallback

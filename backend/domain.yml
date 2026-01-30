@@ -1,0 +1,451 @@
+version: "3.1"
+
+intents:
+  - greet
+  - start_emergency
+  - confirm_emergency
+  - deny_emergency
+  - select_disaster
+  - provide_location
+  - confirm_location
+  - report_location_context
+  - report_damage_status
+  - report_gas_status
+  - report_injury
+  - report_fire_severity
+  - report_fire_control
+  - report_water_level
+  - report_evacuation_ability
+  - report_flood_zone
+  - find_shelter
+  - request_operator
+  - goodbye
+  - fallback
+
+entities:
+  - disaster_type
+  - location
+  - injury_status
+  - fire_severity
+  - water_level
+
+slots:
+  disaster_type:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: disaster_type
+
+  location:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: custom
+
+  location_lat:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+  location_lng:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+  injury_status:
+    type: categorical
+    values: [injured, trapped, safe]
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: injury_status
+      - type: from_text
+
+  fire_severity:
+    type: categorical
+    values: [small, large]
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: fire_severity
+
+  fire_under_control:
+    type: bool
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: fire_under_control
+
+  water_level:
+    type: categorical
+    values: [outside, inside_home]
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: water_level
+
+  can_evacuate:
+    type: bool
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: can_evacuate
+
+  in_flood_zone:
+    type: bool
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: in_flood_zone
+
+  risk_score:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+  escalation_required:
+    type: bool
+    influence_conversation: true
+    mappings:
+      - type: custom
+
+responses:
+  utter_greet:
+    - text: "If this is an emergency, type 'emergency' or tap the button below."
+      buttons:
+        - title: "🚨 Emergency"
+          payload: "/start_emergency"
+
+  utter_entry_disclaimer:
+    - text: "I am an automated emergency assistant and do not replace emergency services."
+
+  utter_ask_emergency:
+    - text: "Are you currently experiencing an emergency?"
+      buttons:
+        - title: "Yes"
+          payload: "/confirm_emergency"
+        - title: "No"
+          payload: "/deny_emergency"
+
+  utter_ask_disaster_type:
+    - text: "What is happening right now?"
+      buttons:
+        - title: "🔥 Fire"
+          payload: "Fire"
+        - title: "🌊 Flood"
+          payload: "Flood"
+        - title: "🌍 Earthquake"
+          payload: "Earthquake"
+
+  utter_ask_location:
+    - text: "Where are you currently located?"
+      buttons:
+        - title: "📍 Share current location"
+          payload: "/provide_location"
+
+  utter_confirm_location:
+    - text: "I have your location as {location}. Is this correct?"
+      buttons:
+        - title: "Yes"
+          payload: "/confirm_location"
+        - title: "No"
+          payload: "/provide_location"
+
+  utter_ask_injury:
+    - text: "Is anyone injured or trapped?"
+      buttons:
+        - title: "🚑 Injured"
+          payload: "Injured"
+        - title: "🧍 Trapped"
+          payload: "Trapped"
+        - title: "✅ Safe"
+          payload: "Safe"
+
+  utter_ask_indoors:
+    - text: "Are you indoors, outdoors, or in a vehicle right now?"
+      buttons:
+        - title: "🏠 Indoors"
+          payload: "Indoors"
+        - title: "🌳 Outdoors"
+          payload: "Outdoors"
+        - title: "🚗 In a vehicle"
+          payload: "In a vehicle"
+
+  utter_advice_indoors:
+    - text: |
+        DROP, COVER, and HOLD ON.
+        • Stay away from windows.
+        • Take cover under a sturdy table.
+
+  utter_advice_outdoors:
+    - text: |
+        MOVE TO AN OPEN AREA.
+        • Stay away from buildings, streetlights, and utility wires.
+
+  utter_advice_vehicle:
+    - text: |
+        PULL OVER SAFELY.
+        • Stay inside the vehicle until shaking stops.
+        • Avoid stopping near trees or overpasses.
+
+  utter_ask_structural_damage:
+    - text: "Do you see structural damage to your building (cracks, collapse)?"
+      buttons:
+        - title: "Yes, damage"
+          payload: "Yes, damage"
+        - title: "No, looks safe"
+          payload: "No, looks safe"
+
+  utter_ask_gas_leak:
+    - text: "Do you smell gas or see sparks/fire?"
+      buttons:
+        - title: "Yes, gas/fire"
+          payload: "Yes, gas/fire"
+        - title: "No, clear"
+          payload: "No, clear"
+
+  utter_ask_needs:
+    - text: "What do you need right now?"
+      buttons:
+        - title: "🏠 Find Shelter"
+          payload: "/find_shelter"
+        - title: "🚑 Medical Info"
+          payload: "Medical Info"
+        - title: "✅ I'm Okay"
+          payload: "I am okay"
+
+  utter_ask_fire_severity:
+    - text: "Is the fire small and contained or large and spreading?"
+      buttons:
+        - title: "Small fire"
+          payload: "Small fire"
+        - title: "Large fire"
+          payload: "Large fire"
+
+  utter_ask_fire_control:
+    - text: "Were you able to control the fire, or is it still spreading?"
+      buttons:
+        - title: "✅ Yes, under control"
+          payload: "Yes, under control"
+        - title: "❌ No, spreading"
+          payload: "No, spreading"
+
+  utter_ask_water_level:
+    - text: "Is flood water entering your home?"
+      buttons:
+        - title: "Outside home"
+          payload: "Outside home"
+        - title: "Inside home"
+          payload: "Inside home"
+
+  utter_ask_evacuate:
+    - text: "Can you safely evacuate from your location?"
+      buttons:
+        - title: "Yes, I can leave"
+          payload: "Yes, I can leave"
+        - title: "No, path blocked"
+          payload: "No, path blocked"
+
+  utter_ask_flood_zone:
+    - text: "Are you in a known flood zone?"
+      buttons:
+        - title: "Yes, flood zone"
+          payload: "Yes, flood zone"
+        - title: "No, safe area"
+          payload: "No, safe area"
+
+  utter_flood_shutdown_evacuate:
+    - text: |
+        ACTION REQUIRED:
+        • Shut off electricity at the main breaker.
+        • Evacuate immediately to the nearest shelter.
+        • Do not walk through moving water.
+      buttons:
+        - title: "🏠 Find Shelter"
+          payload: "/find_shelter"
+        - title: "👤 Talk to Operator"
+          payload: "/request_operator"
+
+  utter_flood_move_high:
+    - text: |
+        DANGER - DO NOT EVACUATE:
+        • Call emergency services immediately.
+        • Move to the highest floor or roof.
+        • Do not enter a closed attic (risk of entrapment).
+      buttons:
+        - title: "🔴 Talk to Operator"
+          payload: "/request_operator"
+        - title: "🏠 Find Shelter"
+          payload: "/find_shelter"
+
+  utter_flood_prepare:
+    - text: |
+        PREPARE NOW:
+        • Monitor official alerts.
+        • Prepare your evacuation kit.
+        • Move valuables to higher levels.
+      buttons:
+        - title: "🏠 Find Shelter"
+          payload: "/find_shelter"
+        - title: "👤 Talk to Operator"
+          payload: "/request_operator"
+
+  utter_flood_stay_informed:
+    - text: |
+        Stay safe.
+        • Monitor local weather conditions.
+        • Avoid areas near rivers or drains.
+      buttons:
+        - title: "🏠 Find Shelter"
+          payload: "/find_shelter"
+        - title: "👤 Talk to Operator"
+          payload: "/request_operator"
+
+  utter_earthquake_safe:
+    - text: |
+        Stay where you are.
+        • Check yourself and others for injuries
+        • Avoid damaged buildings
+        • Be prepared for aftershocks
+        • Keep emergency supplies ready
+      buttons:
+        - title: "🏠 Find Shelter"
+          payload: "/find_shelter"
+        - title: "👤 Talk to Operator"
+          payload: "/request_operator"
+
+  utter_earthquake_injured:
+    - text: |
+        If someone is injured:
+        • Apply basic first aid if safe
+        • Do not move seriously injured persons
+        • Call emergency services immediately
+      buttons:
+        - title: "🔴 Talk to Operator"
+          payload: "/request_operator"
+        - title: "🏠 Find Shelter"
+          payload: "/find_shelter"
+
+  utter_earthquake_trapped:
+    - text: |
+        If someone is trapped:
+        • Do not light matches or candles
+        • Cover mouth to avoid dust
+        • Signal for help using sound or light
+        • Emergency services are being notified
+      buttons:
+        - title: "🔴 Talk to Operator"
+          payload: "/request_operator"
+
+  utter_flood_indoor:
+    - text: |
+        Flood water is inside your home:
+        • Move to the highest safe level
+        • Turn off electricity if possible
+        • Avoid walking through water
+        • Prepare to evacuate immediately
+      buttons:
+        - title: "🏠 Find Shelter"
+          payload: "/find_shelter"
+        - title: "👤 Talk to Operator"
+          payload: "/request_operator"
+
+  utter_flood_outdoor:
+    - text: |
+        You are outside during a flood:
+        • Move to higher ground immediately
+        • Avoid bridges and fast-moving water
+        • Follow official evacuation orders
+      buttons:
+        - title: "🏠 Find Shelter"
+          payload: "/find_shelter"
+        - title: "👤 Talk to Operator"
+          payload: "/request_operator"
+
+  utter_fire_small:
+    - text: |
+        Small, contained fire:
+        • Use a fire extinguisher if trained
+        • Keep exit path behind you
+        • If fire grows, evacuate immediately
+
+  utter_fire_large:
+    - text: |
+        Large or spreading fire:
+        • Evacuate immediately
+        • Do not attempt to fight the fire
+        • Close doors behind you
+        • Call emergency services
+      buttons:
+        - title: "🔴 Talk to Operator"
+          payload: "/request_operator"
+        - title: "🏠 Find Shelter"
+          payload: "/find_shelter"
+
+  utter_fire_monitor:
+    - text: |
+        Good work. 
+        • Monitor the area closely for re-ignition.
+        • Ventilate the room if safe.
+        • If smoke persists, leave the area.
+      buttons:
+        - title: "🏠 Find Shelter"
+          payload: "/find_shelter"
+        - title: "👤 Talk to Operator"
+          payload: "/request_operator"
+
+  utter_fire_evacuate_now:
+    - text: |
+        EVACUATE IMMEDIATELY.
+        • Pull the nearest fire alarm.
+        • Get to the assembly point.
+        • Do not return inside.
+      buttons:
+        - title: "🔴 Talk to Operator"
+          payload: "/request_operator"
+        - title: "🏠 Find Shelter"
+          payload: "/find_shelter"
+
+  utter_provide_guidance:
+    - text: "Please move to a safe area and follow official safety guidance."
+      buttons:
+        - title: "🏠 Find shelters"
+          payload: "/find_shelter"
+        - title: "👤 Talk to operator"
+          payload: "/request_operator"
+
+  utter_show_shelters:
+    - custom:
+        show_shelters: true
+      buttons:
+        - title: "Talk to Operator"
+          payload: "/talk_operator"
+        - title: "End Chat"
+          payload: "/end_chat"
+
+  utter_escalation_notice:
+    - text: "This is dangerous. I am connecting you to a human operator."
+
+  utter_goodbye:
+    - text: "Stay safe."
+      buttons:
+        - title: "🚨 Restart"
+          payload: "/start_emergency"
+
+  utter_fallback:
+    - text: "I didn’t understand that. Please try again or contact emergency services."
+
+actions:
+  - action_process_location
+  - action_route_after_location
+  - action_calculate_risk
+  - action_escalate_to_human
+  - action_provide_shelters
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: false

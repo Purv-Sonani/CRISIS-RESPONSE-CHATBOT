@@ -1,0 +1,169 @@
+version: "3.1"
+
+nlu:
+  - intent: greet
+    examples: |
+      - hello
+      - hi
+      - hey
+      - good morning
+      - good evening
+
+  - intent: start_emergency
+    examples: |
+      - emergency
+      - I need help
+      - urgent help
+
+  - intent: confirm_emergency
+    examples: |
+      - yes
+      - yes it is an emergency
+
+  - intent: deny_emergency
+    examples: |
+      - no
+      - false alarm
+
+  - intent: select_disaster
+    examples: |
+      - [fire](disaster_type)
+      - [flood](disaster_type)
+      - [earthquake](disaster_type)
+      - [Fire](disaster_type)
+      - [Flood](disaster_type)
+      - [Earthquake](disaster_type)
+      - there is a [fire](disaster_type)
+      - there is a [flood](disaster_type)
+      - an [earthquake](disaster_type)
+
+  - intent: provide_location
+    examples: |
+      - I am in [Berlin](location)
+      - at [Munich](location)
+      - Near Alexanderplatz
+      - My address is Baker Street
+      - 52.5200, 13.4050
+
+  - intent: confirm_location
+    examples: |
+      - yes correct
+      - yes that is my location
+
+  - intent: report_injury
+    examples: |
+      - someone is injured
+      - people are hurt
+      - Injured
+      - Trapped
+      - Safe
+      - [injured](injury_status)
+      - [trapped](injury_status)
+      - [safe](injury_status)
+
+  - intent: report_location_context
+    examples: |
+      - Indoors
+      - Outdoors
+      - In a vehicle
+      - I am inside
+      - I am outside
+      - driving
+
+  - intent: report_damage_status
+    examples: |
+      - Yes, damage
+      - No, looks safe
+      - There is damage
+      - No damage
+
+  - intent: report_gas_status
+    examples: |
+      - Yes, gas/fire
+      - No, clear
+      - I smell gas
+      - No gas
+
+  - intent: report_fire_severity
+    examples: |
+      - small fire
+      - large fire
+      - Small fire
+      - Large fire
+      - [small](fire_severity) fire
+      - [large](fire_severity) fire
+
+  - intent: report_fire_control
+    examples: |
+      - yes it is under control
+      - no it is spreading
+      - Yes, under control
+      - No, spreading
+      # We map the text to the boolean slot values explicitly here
+      - [Yes, under control](fire_under_control:true)
+      - [No, spreading](fire_under_control:false)
+
+  - intent: report_water_level
+    examples: |
+      - water is outside
+      - water is inside
+      - Outside home
+      - Inside home
+      - [outside](water_level)
+      - [inside_home](water_level)
+
+  - intent: report_evacuation_ability
+    examples: |
+      - Yes, I can leave
+      - No, path blocked
+      - [Yes, I can leave](can_evacuate:true)
+      - [No, path blocked](can_evacuate:false)
+      - I can evacuate
+      - I cannot evacuate
+
+  - intent: report_flood_zone
+    examples: |
+      - Yes, flood zone
+      - No, safe area
+      - [Yes, flood zone](in_flood_zone:true)
+      - [No, safe area](in_flood_zone:false)
+      - I am in a flood zone
+      - I am not in a flood zone
+
+  - intent: request_operator
+    examples: |
+      - I need a human
+
+  - intent: fallback
+    examples: |
+      - asdasd
+      - ???
+
+  - synonym: fire
+    examples: |
+      - Fire
+      - FIRE
+
+  - synonym: flood
+    examples: |
+      - Flood
+      - FLOOD
+
+  - synonym: earthquake
+    examples: |
+      - Earthquake
+      - EARTHQUAKE
+
+  - synonym: inside_home
+    examples: |
+      - Inside home
+      - inside home
+      - water is inside
+      - inside
+
+  - synonym: outside
+    examples: |
+      - Outside home
+      - outside home
+      - water is outside
+      - outside
